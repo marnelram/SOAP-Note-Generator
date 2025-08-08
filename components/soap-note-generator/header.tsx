@@ -5,7 +5,7 @@ interface HeaderProps {
 
 export function Header({
   title = "SOAP Note Generator",
-  description = "Voice-to-SOAP medical documentation assistant powered by Deepgram Nova-3-Medical",
+  description = "Voice-to-SOAP medical documentation assistant",
 }: HeaderProps) {
   return (
     <div className="text-center py-8 px-4">
@@ -14,6 +14,3 @@ export function Header({
     </div>
   );
 }
-
-
-

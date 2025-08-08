@@ -5,10 +5,15 @@ import { useToast } from "@/hooks/use-toast";
 import { useCompletion } from "@ai-sdk/react";
 import { useDeepgramTranscription } from "@/hooks/use-deepgram-transcription";
 import { InputPanel, SOAPNoteDisplay } from "@/components/soap-note-generator";
+import { cn } from "@/lib/utils";
+import SOAPDrawer from "@/components/soap-note-generator/SOAP-drawer";
 
-export default function SOAPNoteGenerator() {
+export default function SOAPNoteGeneratorPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  /** Reference to the case drawer toggle button for programmatic control */
+  const drawerRef = useRef<HTMLButtonElement>(null);
 
   // Use Deepgram for transcription
   const {
@@ -80,6 +85,9 @@ export default function SOAPNoteGenerator() {
     }
 
     try {
+      if (drawerRef.current && window && window.innerWidth < 1024) {
+        drawerRef.current.click();
+      }
       await complete(`${transcript}`);
 
       toast({
@@ -132,7 +140,7 @@ ${transcript}`;
   };
 
   return (
-    <div className="flex w-full h-dvh flex-row overflow-hidden bg-white min-h-screen">
+    <div className="flex flex-col lg:flex-row w-full h-[calc(100dvh-6rem)] lg:h-dvh overflow-hidden bg-white min-h-screen">
       <InputPanel
         soapNoteContent={soapNoteContent}
         transcript={transcript}
@@ -146,8 +154,21 @@ ${transcript}`;
         onGenerateSOAP={handleGenerateSOAP}
         onCopyToClipboard={copyToClipboard}
       />
-
-      <SOAPNoteDisplay
+      <div
+        className={cn(
+          "z-10 hidden size-full flex-col gap-4 overflow-y-auto p-8 shadow-lg transition-all duration-700 ease-in-out lg:flex",
+          soapNoteContent ? "lg:w-3/5" : "bg-blue-50 lg:w-2/5"
+        )}
+      >
+        <SOAPNoteDisplay
+          soapNoteContent={soapNoteContent}
+          onCopyToClipboard={copyToClipboard}
+          onExportSOAP={exportSOAP}
+        />
+      </div>
+      <SOAPDrawer
+        drawerRef={drawerRef}
+        isLoading={isLoading}
         soapNoteContent={soapNoteContent}
         onCopyToClipboard={copyToClipboard}
         onExportSOAP={exportSOAP}

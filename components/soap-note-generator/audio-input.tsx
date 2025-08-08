@@ -31,9 +31,8 @@ export function AudioInput({
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Voice Recording */}
-        <div className="space-y-2">
-          <h3 className="text-sm font-medium text-gray-700">Voice Recording</h3>
-          <div className="flex items-center justify-center gap-4">
+        <div className="space-y-2 w-full justify-center flex">
+          {!isRecording ? (
             <Button
               onClick={onStartRecording}
               disabled={isRecording || isTranscribing}
@@ -43,6 +42,7 @@ export function AudioInput({
               <Mic className="h-5 w-5 mr-2" />
               Start Recording
             </Button>
+          ) : (
             <Button
               onClick={onStopRecording}
               disabled={!isRecording || isTranscribing}
@@ -52,32 +52,7 @@ export function AudioInput({
               <MicOff className="h-5 w-5 mr-2" />
               Stop Recording
             </Button>
-          </div>
-        </div>
-
-        {/* File Upload */}
-        <div className="space-y-2">
-          <h3 className="text-sm font-medium text-gray-700">
-            Upload Audio File
-          </h3>
-          <div className="flex items-center justify-center">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="audio/*"
-              onChange={onFileUpload}
-              className="hidden"
-            />
-            <Button
-              onClick={() => fileInputRef.current?.click()}
-              disabled={isRecording || isTranscribing}
-              variant="outline"
-              size="lg"
-            >
-              <Upload className="h-5 w-5 mr-2" />
-              Upload Audio File
-            </Button>
-          </div>
+          )}
         </div>
 
         {(isRecording || isTranscribing) && (
@@ -92,6 +67,3 @@ export function AudioInput({
     </Card>
   );
 }
-
-
-
