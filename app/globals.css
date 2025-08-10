@@ -1,61 +1,369 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin 'tailwindcss-animate';
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-neutral-50: var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+  --color-neutral-950: var(--neutral-950);
+  --color-neutral: var(--neutral-500);
+
+  --color-cobalt-50: var(--cobalt-50);
+  --color-cobalt-100: var(--cobalt-100);
+  --color-cobalt-200: var(--cobalt-200);
+  --color-cobalt-300: var(--cobalt-300);
+  --color-cobalt-400: var(--cobalt-400);
+  --color-cobalt-500: var(--cobalt-500);
+  --color-cobalt-600: var(--cobalt-600);
+  --color-cobalt-700: var(--cobalt-700);
+  --color-cobalt-800: var(--cobalt-800);
+  --color-cobalt-900: var(--cobalt-900);
+  --color-cobalt-950: var(--cobalt-950);
+  --color-cobalt: var(--cobalt-500);
+
+  --color-black: var(--black);
+  --color-white: var(--white);
+
+  --color-red-50: var(--red-50);
+  --color-red-100: var(--red-100);
+  --color-red-200: var(--red-200);
+  --color-red-300: var(--red-300);
+  --color-red-400: var(--red-400);
+  --color-red-500: var(--red-500);
+  --color-red-600: var(--red-600);
+  --color-red-700: var(--red-700);
+  --color-red-800: var(--red-800);
+  --color-red-900: var(--red-900);
+  --color-red-950: var(--red-950);
+  --color-red: var(--red-500);
+
+  --color-green-50: var(--green-50);
+  --color-green-100: var(--green-100);
+  --color-green-200: var(--green-200);
+  --color-green-300: var(--green-300);
+  --color-green-400: var(--green-400);
+  --color-green-500: var(--green-500);
+  --color-green-600: var(--green-600);
+  --color-green-700: var(--green-700);
+  --color-green-800: var(--green-800);
+  --color-green-900: var(--green-900);
+  --color-green-950: var(--green-950);
+  --color-green: var(--green-500);
+
+  --color-transparent: var(--transparent);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --transition-property-height: height;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@layer utilities {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+
+  video {
+    clip-path: inset(1px 1px);
+  }
+}
 
 @layer base {
+  /* OKLCH Color Palette Variables - Available for CSS Variable Usage */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.75rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    /* Neutral Colors */
+    --color-neutral-50: oklch(99% 0.0005 250);
+    --color-neutral-100: oklch(97% 0.001 252);
+    --color-neutral-200: oklch(95% 0.002 254);
+    --color-neutral-300: oklch(91% 0.003 256);
+    --color-neutral-400: oklch(82% 0.005 258);
+    --color-neutral-500: oklch(65% 0.01 260);
+    --color-neutral-600: oklch(33% 0.02 262);
+    --color-neutral-700: oklch(17% 0.03 264);
+    --color-neutral-800: oklch(9% 0.04 266);
+    --color-neutral-900: oklch(4% 0.05 268);
+    --color-neutral-950: oklch(1% 0.05 270);
+
+    --color-cobalt-50: oklch(99% 0.01 250);
+    --color-cobalt-100: oklch(97% 0.02 252);
+    --color-cobalt-200: oklch(95% 0.04 254);
+    --color-cobalt-300: oklch(91% 0.1 256);
+    --color-cobalt-400: oklch(82% 0.18 258);
+    --color-cobalt-500: oklch(65% 0.25 260);
+    --color-cobalt-600: oklch(33% 0.245 262);
+    --color-cobalt-700: oklch(17% 0.24 264);
+    --color-cobalt-800: oklch(9% 0.225 266);
+    --color-cobalt-900: oklch(4% 0.2 268);
+    --color-cobalt-950: oklch(1% 0.15 270);
+
+    /* Red Colors */
+    --color-red-50: oklch(99% 0.01 10);
+    --color-red-100: oklch(97% 0.02 12);
+    --color-red-200: oklch(95% 0.04 14);
+    --color-red-300: oklch(91% 0.1 16);
+    --color-red-400: oklch(82% 0.18 18);
+    --color-red-500: oklch(65% 0.25 20);
+    --color-red-600: oklch(33% 0.245 22);
+    --color-red-700: oklch(17% 0.24 24);
+    --color-red-800: oklch(9% 0.225 26);
+    --color-red-900: oklch(4% 0.2 28);
+    --color-red-950: oklch(1% 0.15 30);
+
+    /* Green Colors (100-140 hue range) */
+    --color-green-50: oklch(99% 0.01 110);
+    --color-green-100: oklch(97% 0.02 112);
+    --color-green-200: oklch(95% 0.04 114);
+    --color-green-300: oklch(91% 0.1 116);
+    --color-green-400: oklch(82% 0.18 118);
+    --color-green-500: oklch(65% 0.25 120);
+    --color-green-600: oklch(33% 0.245 122);
+    --color-green-700: oklch(17% 0.24 124);
+    --color-green-800: oklch(9% 0.225 126);
+    --color-green-900: oklch(4% 0.2 128);
+    --color-green-950: oklch(1% 0.15 130);
+
+    --transparent: oklch(0% 0 0 / 0);
+
+    /* color mappings */
+
+    /* neutral */
+    --neutral-50: var(--color-neutral-50);
+    --neutral-100: var(--color-neutral-100);
+    --neutral-200: var(--color-neutral-200);
+    --neutral-300: var(--color-neutral-300);
+    --neutral-400: var(--color-neutral-400);
+    --neutral-500: var(--color-neutral-500);
+    --neutral-600: var(--color-neutral-600);
+    --neutral-700: var(--color-neutral-700);
+    --neutral-800: var(--color-neutral-800);
+    --neutral-900: var(--color-neutral-900);
+    --neutral-950: var(--color-neutral-950);
+
+    /* cobalt */
+    --cobalt-50: var(--color-cobalt-50);
+    --cobalt-100: var(--color-cobalt-100);
+    --cobalt-200: var(--color-cobalt-200);
+    --cobalt-300: var(--color-cobalt-300);
+    --cobalt-400: var(--color-cobalt-400);
+    --cobalt-500: var(--color-cobalt-500);
+    --cobalt-600: var(--color-cobalt-600);
+    --cobalt-700: var(--color-cobalt-700);
+    --cobalt-800: var(--color-cobalt-800);
+    --cobalt-900: var(--color-cobalt-900);
+    --cobalt-950: var(--color-cobalt-950);
+
+    /* red */
+    --red-50: var(--color-red-50);
+    --red-100: var(--color-red-100);
+    --red-200: var(--color-red-200);
+    --red-300: var(--color-red-300);
+    --red-400: var(--color-red-400);
+    --red-500: var(--color-red-500);
+    --red-600: var(--color-red-600);
+    --red-700: var(--color-red-700);
+    --red-800: var(--color-red-800);
+    --red-900: var(--color-red-900);
+    --red-950: var(--color-red-950);
+
+    /* green */
+    --green-50: var(--color-green-50);
+    --green-100: var(--color-green-100);
+    --green-200: var(--color-green-200);
+    --green-300: var(--color-green-300);
+    --green-400: var(--color-green-400);
+    --green-500: var(--color-green-500);
+    --green-600: var(--color-green-600);
+    --green-700: var(--color-green-700);
+    --green-800: var(--color-green-800);
+    --green-900: var(--color-green-900);
+    --green-950: var(--color-green-950);
+
+    /* white */
+    --white: oklch(100% 0 0);
+
+    /* black */
+    --black: oklch(0% 0 0);
+
+    /* transparent */
+    --transparent: var(--color-transparent);
+
+    /* Light mode - Professional medical interface */
+    --background: var(--cobalt-50);
+    --foreground: var(--cobalt-950);
+    --card: var(--cobalt-200);
+    --card-foreground: var(--cobalt-800);
+    --popover: var(--cobalt-50);
+    --popover-foreground: var(--cobalt-800);
+    --primary: var(--cobalt-600);
+    --primary-foreground: var(--cobalt-50);
+    --secondary: var(--cobalt-700);
+    --secondary-foreground: var(--cobalt-50);
+    --muted: var(--cobalt-100);
+    --muted-foreground: var(--neutral-500);
+    --accent: var(--cobalt-500);
+    --accent-foreground: var(--cobalt-50);
+    --destructive: var(--red-500);
+    --destructive-foreground: var(--red-50);
+    --border: var(--cobalt-300);
+    --input: var(--cobalt-800);
+    --ring: var(--cobalt-400);
+    --chart-1: var(--red-500);
+    --chart-2: var(--green-500);
+    --chart-3: var(--cobalt-500);
+    --chart-4: var(--neutral-500);
+    --chart-5: var(--red-400);
+    --radius: 0.5rem;
+
+    /* Tailwind shadow color*/
+    --tw-shadow-color: rgb(0 0 0);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    /* neutral */
+    --neutral-50: var(--color-neutral-950);
+    --neutral-100: var(--color-neutral-900);
+    --neutral-200: var(--color-neutral-800);
+    --neutral-300: var(--color-neutral-700);
+    --neutral-400: var(--color-neutral-600);
+    --neutral-500: var(--color-neutral-500);
+    --neutral-600: var(--color-neutral-400);
+    --neutral-700: var(--color-neutral-300);
+    --neutral-800: var(--color-neutral-200);
+    --neutral-900: var(--color-neutral-100);
+    --neutral-950: var(--color-neutral-50);
+
+    /* cobalt */
+    --cobalt-50: var(--color-cobalt-950);
+    --cobalt-100: var(--color-cobalt-900);
+    --cobalt-200: var(--color-cobalt-800);
+    --cobalt-300: var(--color-cobalt-700);
+    --cobalt-400: var(--color-cobalt-600);
+    --cobalt-500: var(--color-cobalt-500);
+    --cobalt-600: var(--color-cobalt-400);
+    --cobalt-700: var(--color-cobalt-300);
+    --cobalt-800: var(--color-cobalt-200);
+    --cobalt-900: var(--color-cobalt-100);
+    --cobalt-950: var(--color-cobalt-50);
+
+    /* red */
+    --red-50: var(--color-red-950);
+    --red-100: var(--color-red-900);
+    --red-200: var(--color-red-800);
+    --red-300: var(--color-red-700);
+    --red-400: var(--color-red-600);
+    --red-500: var(--color-red-500);
+    --red-600: var(--color-red-400);
+    --red-700: var(--color-red-300);
+    --red-800: var(--color-red-200);
+    --red-900: var(--color-red-100);
+    --red-950: var(--color-red-50);
+
+    /* green */
+    --green-50: var(--color-green-950);
+    --green-100: var(--color-green-900);
+    --green-200: var(--color-green-800);
+    --green-300: var(--color-green-700);
+    --green-400: var(--color-green-600);
+    --green-500: var(--color-green-500);
+    --green-600: var(--color-green-400);
+    --green-700: var(--color-green-300);
+    --green-800: var(--color-green-200);
+    --green-900: var(--color-green-100);
+    --green-950: var(--color-green-50);
+
+    /* white */
+    --white: oklch(0% 0 0);
+
+    /* black */
+    --black: oklch(100% 0 0);
+
+    /* Tailwind shadow color */
+    --tw-shadow-color: rgb(255 255 255 / 0.1);
   }
 }
 
@@ -68,16 +376,62 @@
   }
 }
 
-/* Custom styles for speech recognition */
-.recording-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+@layer utilities {
+  .prose {
+    font-size: 1em;
+  }
+
+  div::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  div::-webkit-scrollbar-thumb {
+    background: var(--neutral-400);
+    border-radius: 8px;
+  }
+
+  div::-webkit-scrollbar-thumb:hover {
+    background: var(--neutral-500);
+  }
+
+  /* Updated button styles */
+  div::-webkit-scrollbar-button:single-button {
+    height: 16px; /* Increased from 12px */
+    width: 8px;
+    border-radius: 4px;
+  }
+
+  div::-webkit-scrollbar-button:single-button:hover {
+    background: var(--neutral-400);
+  }
+
+  /* Up arrow - more specific selector */
+  div::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%239ca5b0' d='M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  /* Down arrow - more specific selector */
+  div::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%239ca5b0' d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
+@layer base {
+  * {
+    @apply border-border;
+    outline-color: oklch(var(--ring) / 0.5);
   }
-  50% {
-    opacity: .5;
+  body {
+    @apply bg-background text-foreground;
   }
+}
+
+.hiddenScrollX::-webkit-scrollbar,
+.hiddenScrollX::-webkit-scrollbar-track {
+  width: 0px;
+  height: 0px;
 }
