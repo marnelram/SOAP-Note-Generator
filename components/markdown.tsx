@@ -5,7 +5,6 @@
  * styling and specialized table handling for patient case data. Includes
  * memoized React Markdown component and custom renderers.
  *
- * @author LeetCare Development Team
  */
 
 import React, { FC, memo, ReactNode, HTMLAttributes } from "react";
@@ -72,9 +71,7 @@ export const dataComponents = {
     );
   },
   thead({ children }: { children?: ReactNode }) {
-    return (
-      <thead className="bg-neutral-50 dark:bg-neutral-900">{children}</thead>
-    );
+    return <thead className="bg-muted dark:bg-neutral-900">{children}</thead>;
   },
   th({
     children,

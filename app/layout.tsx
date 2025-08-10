@@ -9,7 +9,6 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "SOAP Note Generator",
   description: "Voice-to-SOAP medical documentation assistant",
-  generator: "v0.dev",
 };
 
 export default function RootLayout({

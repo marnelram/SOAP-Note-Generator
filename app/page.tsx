@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useCompletion } from "@ai-sdk/react";
-import { useDeepgramTranscription } from "@/hooks/use-deepgram-transcription";
+import { useRealtimeTranscription } from "@/hooks/use-realtime-transcription";
 import { InputPanel, SOAPNoteDisplay } from "@/components/soap-note-generator";
 import { cn } from "@/lib/utils";
 import SOAPDrawer from "@/components/soap-note-generator/SOAP-drawer";
@@ -15,17 +15,17 @@ export default function SOAPNoteGeneratorPage() {
   /** Reference to the case drawer toggle button for programmatic control */
   const drawerRef = useRef<HTMLButtonElement>(null);
 
-  // Use Deepgram for transcription
+  // Use real-time transcription
   const {
     isRecording,
     transcript,
-    isTranscribing,
+    interimTranscript,
+    isConnecting,
     startRecording,
     stopRecording,
-    transcribeFile,
     clearTranscript,
     setTranscript,
-  } = useDeepgramTranscription();
+  } = useRealtimeTranscription();
 
   // Use the useCompletion hook for streaming SOAP note generation
   const {
@@ -39,34 +39,7 @@ export default function SOAPNoteGeneratorPage() {
 
   console.log("soap note: ", soapNoteContent);
 
-  const handleFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Check if it's an audio file
-    if (!file.type.startsWith("audio/")) {
-      toast({
-        title: "Invalid File",
-        description: "Please select an audio file.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      clearTranscript();
-      await transcribeFile(file);
-      toast({
-        title: "Transcription Complete",
-        description:
-          "Audio file has been transcribed successfully using Deepgram Nova-3-Medical.",
-      });
-    } catch (error) {
-      console.error("File upload error:", error);
-    }
-  };
+  // Remove file upload functionality for now since we're focusing on real-time
 
   const handleStartRecording = async () => {
     clearTranscript();
@@ -144,12 +117,12 @@ ${transcript}`;
       <InputPanel
         soapNoteContent={soapNoteContent}
         transcript={transcript}
+        interimTranscript={interimTranscript}
         isRecording={isRecording}
-        isTranscribing={isTranscribing}
+        isConnecting={isConnecting}
         isLoading={isLoading}
         onStartRecording={handleStartRecording}
         onStopRecording={stopRecording}
-        onFileUpload={handleFileUpload}
         onTranscriptChange={setTranscript}
         onGenerateSOAP={handleGenerateSOAP}
         onCopyToClipboard={copyToClipboard}

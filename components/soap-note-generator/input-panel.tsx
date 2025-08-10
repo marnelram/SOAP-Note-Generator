@@ -6,12 +6,12 @@ import { TranscriptEditor } from "./transcript-editor";
 interface InputPanelProps {
   soapNoteContent: string;
   transcript: string;
+  interimTranscript?: string;
   isRecording: boolean;
-  isTranscribing: boolean;
+  isConnecting?: boolean;
   isLoading: boolean;
   onStartRecording: () => Promise<void>;
   onStopRecording: () => void;
-  onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   onTranscriptChange: (value: string) => void;
   onGenerateSOAP: () => Promise<void>;
   onCopyToClipboard: (text: string) => Promise<void>;
@@ -20,12 +20,12 @@ interface InputPanelProps {
 export function InputPanel({
   soapNoteContent,
   transcript,
+  interimTranscript,
   isRecording,
-  isTranscribing,
+  isConnecting,
   isLoading,
   onStartRecording,
   onStopRecording,
-  onFileUpload,
   onTranscriptChange,
   onGenerateSOAP,
   onCopyToClipboard,
@@ -42,10 +42,11 @@ export function InputPanel({
       <div className="size-full overflow-y-auto px-4 space-y-6">
         <AudioInput
           isRecording={isRecording}
-          isTranscribing={isTranscribing}
+          isConnecting={isConnecting}
+          transcript={transcript}
+          interimTranscript={interimTranscript}
           onStartRecording={onStartRecording}
           onStopRecording={onStopRecording}
-          onFileUpload={onFileUpload}
         />
 
         <TranscriptEditor
@@ -59,6 +60,3 @@ export function InputPanel({
     </div>
   );
 }
-
-
-

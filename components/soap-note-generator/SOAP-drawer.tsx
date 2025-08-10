@@ -4,8 +4,6 @@
  * This file contains the case drawer component that provides a mobile-friendly interface
  * for viewing and editing generated medical training cases in the case generator. It
  * supports different stages of case development with markdown rendering and editing capabilities.
- *
- * @author LeetCare Development Team
  */
 
 import { RefObject } from "react";
@@ -21,7 +19,7 @@ import {
 import { Loader2, X } from "lucide-react";
 import { SOAPNoteDisplay } from "./soap-note-display";
 
-interface CaseDrawerProps {
+interface SOAPDrawerProps {
   /** Reference to the drawer trigger button element */
   drawerRef: RefObject<HTMLButtonElement | null>;
 
@@ -60,10 +58,13 @@ export default function SOAPDrawer({
   soapNoteContent,
   onCopyToClipboard,
   onExportSOAP,
-}: CaseDrawerProps) {
+}: SOAPDrawerProps) {
   return (
     <Drawer>
-      <DrawerTrigger className="w-full pt-4 lg:pt-0 lg:hidden" ref={drawerRef}>
+      <DrawerTrigger
+        className="w-full pt-4 lg:pt-0 lg:hidden bg-card"
+        ref={drawerRef}
+      >
         <div className="flex w-full items-center gap-2 rounded-t-3xl p-6 shadow-[0px_8px_24px_4px_rgba(0,0,0,0.3)]">
           <p className="text-left text-xl font-bold">Generated Note</p>
           {isLoading && (
@@ -73,7 +74,7 @@ export default function SOAPDrawer({
       </DrawerTrigger>
       <DrawerPortal>
         <DrawerContent>
-          <div className="relative h-[calc(100dvh-6rem)] overflow-y-auto">
+          <div className="relative h-[calc(100dvh-6rem)] overflow-y-auto bg-card">
             <DrawerHeader>
               <DrawerTitle className="flex items-center gap-2">
                 Generated Note
