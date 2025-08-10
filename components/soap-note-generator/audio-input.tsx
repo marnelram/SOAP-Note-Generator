@@ -26,7 +26,7 @@ export function AudioInput({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Mic className="h-5 w-5" />
-          Audio Input
+          Describe Your Encounter
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -37,7 +37,7 @@ export function AudioInput({
               onClick={onStartRecording}
               disabled={isRecording || isTranscribing}
               size="lg"
-              className="bg-green-600 hover:bg-green-700"
+              variant="outline"
             >
               <Mic className="h-5 w-5 mr-2" />
               Start Recording

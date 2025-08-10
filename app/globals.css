@@ -19,18 +19,18 @@
   --color-neutral-950: var(--neutral-950);
   --color-neutral: var(--neutral-500);
 
-  --color-cobalt-50: var(--cobalt-50);
-  --color-cobalt-100: var(--cobalt-100);
-  --color-cobalt-200: var(--cobalt-200);
-  --color-cobalt-300: var(--cobalt-300);
-  --color-cobalt-400: var(--cobalt-400);
-  --color-cobalt-500: var(--cobalt-500);
-  --color-cobalt-600: var(--cobalt-600);
-  --color-cobalt-700: var(--cobalt-700);
-  --color-cobalt-800: var(--cobalt-800);
-  --color-cobalt-900: var(--cobalt-900);
-  --color-cobalt-950: var(--cobalt-950);
-  --color-cobalt: var(--cobalt-500);
+  --color-indigo-50: var(--indigo-50);
+  --color-indigo-100: var(--indigo-100);
+  --color-indigo-200: var(--indigo-200);
+  --color-indigo-300: var(--indigo-300);
+  --color-indigo-400: var(--indigo-400);
+  --color-indigo-500: var(--indigo-500);
+  --color-indigo-600: var(--indigo-600);
+  --color-indigo-700: var(--indigo-700);
+  --color-indigo-800: var(--indigo-800);
+  --color-indigo-900: var(--indigo-900);
+  --color-indigo-950: var(--indigo-950);
+  --color-indigo: var(--indigo-500);
 
   --color-black: var(--black);
   --color-white: var(--white);
@@ -169,17 +169,17 @@
     --color-neutral-900: oklch(4% 0.05 268);
     --color-neutral-950: oklch(1% 0.05 270);
 
-    --color-cobalt-50: oklch(99% 0.01 250);
-    --color-cobalt-100: oklch(97% 0.02 252);
-    --color-cobalt-200: oklch(95% 0.04 254);
-    --color-cobalt-300: oklch(91% 0.1 256);
-    --color-cobalt-400: oklch(82% 0.18 258);
-    --color-cobalt-500: oklch(65% 0.25 260);
-    --color-cobalt-600: oklch(33% 0.245 262);
-    --color-cobalt-700: oklch(17% 0.24 264);
-    --color-cobalt-800: oklch(9% 0.225 266);
-    --color-cobalt-900: oklch(4% 0.2 268);
-    --color-cobalt-950: oklch(1% 0.15 270);
+    --color-indigo-50: oklch(99% 0.01 280);
+    --color-indigo-100: oklch(97% 0.02 282);
+    --color-indigo-200: oklch(95% 0.04 284);
+    --color-indigo-300: oklch(90% 0.1 286);
+    --color-indigo-400: oklch(80% 0.18 288);
+    --color-indigo-500: oklch(60% 0.25 290);
+    --color-indigo-600: oklch(30% 0.245 292);
+    --color-indigo-700: oklch(15% 0.24 294);
+    --color-indigo-800: oklch(10% 0.225 296);
+    --color-indigo-900: oklch(5% 0.2 298);
+    --color-indigo-950: oklch(1% 0.15 300);
 
     /* Red Colors */
     --color-red-50: oklch(99% 0.01 10);
@@ -224,18 +224,18 @@
     --neutral-900: var(--color-neutral-900);
     --neutral-950: var(--color-neutral-950);
 
-    /* cobalt */
-    --cobalt-50: var(--color-cobalt-50);
-    --cobalt-100: var(--color-cobalt-100);
-    --cobalt-200: var(--color-cobalt-200);
-    --cobalt-300: var(--color-cobalt-300);
-    --cobalt-400: var(--color-cobalt-400);
-    --cobalt-500: var(--color-cobalt-500);
-    --cobalt-600: var(--color-cobalt-600);
-    --cobalt-700: var(--color-cobalt-700);
-    --cobalt-800: var(--color-cobalt-800);
-    --cobalt-900: var(--color-cobalt-900);
-    --cobalt-950: var(--color-cobalt-950);
+    /* indigo */
+    --indigo-50: var(--color-indigo-50);
+    --indigo-100: var(--color-indigo-100);
+    --indigo-200: var(--color-indigo-200);
+    --indigo-300: var(--color-indigo-300);
+    --indigo-400: var(--color-indigo-400);
+    --indigo-500: var(--color-indigo-500);
+    --indigo-600: var(--color-indigo-600);
+    --indigo-700: var(--color-indigo-700);
+    --indigo-800: var(--color-indigo-800);
+    --indigo-900: var(--color-indigo-900);
+    --indigo-950: var(--color-indigo-950);
 
     /* red */
     --red-50: var(--color-red-50);
@@ -273,28 +273,28 @@
     --transparent: var(--color-transparent);
 
     /* Light mode - Professional medical interface */
-    --background: var(--cobalt-50);
-    --foreground: var(--cobalt-950);
-    --card: var(--cobalt-200);
-    --card-foreground: var(--cobalt-800);
-    --popover: var(--cobalt-50);
-    --popover-foreground: var(--cobalt-800);
-    --primary: var(--cobalt-600);
-    --primary-foreground: var(--cobalt-50);
-    --secondary: var(--cobalt-700);
-    --secondary-foreground: var(--cobalt-50);
-    --muted: var(--cobalt-100);
+    --background: var(--indigo-50);
+    --foreground: var(--indigo-950);
+    --card: var(--indigo-200);
+    --card-foreground: var(--indigo-800);
+    --popover: var(--indigo-50);
+    --popover-foreground: var(--indigo-800);
+    --primary: var(--indigo-600);
+    --primary-foreground: var(--indigo-50);
+    --secondary: var(--indigo-700);
+    --secondary-foreground: var(--indigo-50);
+    --muted: var(--indigo-100);
     --muted-foreground: var(--neutral-500);
-    --accent: var(--cobalt-500);
-    --accent-foreground: var(--cobalt-50);
+    --accent: var(--indigo-500);
+    --accent-foreground: var(--indigo-50);
     --destructive: var(--red-500);
     --destructive-foreground: var(--red-50);
-    --border: var(--cobalt-300);
-    --input: var(--cobalt-800);
-    --ring: var(--cobalt-400);
+    --border: var(--indigo-300);
+    --input: var(--indigo-800);
+    --ring: var(--indigo-400);
     --chart-1: var(--red-500);
     --chart-2: var(--green-500);
-    --chart-3: var(--cobalt-500);
+    --chart-3: var(--indigo-500);
     --chart-4: var(--neutral-500);
     --chart-5: var(--red-400);
     --radius: 0.5rem;
@@ -317,18 +317,18 @@
     --neutral-900: var(--color-neutral-100);
     --neutral-950: var(--color-neutral-50);
 
-    /* cobalt */
-    --cobalt-50: var(--color-cobalt-950);
-    --cobalt-100: var(--color-cobalt-900);
-    --cobalt-200: var(--color-cobalt-800);
-    --cobalt-300: var(--color-cobalt-700);
-    --cobalt-400: var(--color-cobalt-600);
-    --cobalt-500: var(--color-cobalt-500);
-    --cobalt-600: var(--color-cobalt-400);
-    --cobalt-700: var(--color-cobalt-300);
-    --cobalt-800: var(--color-cobalt-200);
-    --cobalt-900: var(--color-cobalt-100);
-    --cobalt-950: var(--color-cobalt-50);
+    /* indigo */
+    --indigo-50: var(--color-indigo-950);
+    --indigo-100: var(--color-indigo-900);
+    --indigo-200: var(--color-indigo-800);
+    --indigo-300: var(--color-indigo-700);
+    --indigo-400: var(--color-indigo-600);
+    --indigo-500: var(--color-indigo-500);
+    --indigo-600: var(--color-indigo-400);
+    --indigo-700: var(--color-indigo-300);
+    --indigo-800: var(--color-indigo-200);
+    --indigo-900: var(--color-indigo-100);
+    --indigo-950: var(--color-indigo-50);
 
     /* red */
     --red-50: var(--color-red-950);

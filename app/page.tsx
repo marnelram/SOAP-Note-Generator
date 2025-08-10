@@ -140,7 +140,7 @@ ${transcript}`;
   };
 
   return (
-    <div className="flex flex-col lg:flex-row w-full h-[calc(100dvh-6rem)] lg:h-dvh overflow-hidden bg-white min-h-screen">
+    <div className="flex flex-col lg:flex-row w-full h-[calc(100dvh-6rem)] lg:h-dvh overflow-hidden min-h-screen">
       <InputPanel
         soapNoteContent={soapNoteContent}
         transcript={transcript}
@@ -156,8 +156,8 @@ ${transcript}`;
       />
       <div
         className={cn(
-          "z-10 hidden size-full flex-col gap-4 overflow-y-auto p-8 shadow-lg transition-all duration-700 ease-in-out lg:flex",
-          soapNoteContent ? "lg:w-3/5" : "bg-blue-50 lg:w-2/5"
+          "bg-card z-10 hidden size-full flex-col gap-4 overflow-y-auto p-8 shadow-lg transition-all duration-700 ease-in-out lg:flex",
+          soapNoteContent ? "lg:w-3/5" : "lg:w-2/5"
         )}
       >
         <SOAPNoteDisplay

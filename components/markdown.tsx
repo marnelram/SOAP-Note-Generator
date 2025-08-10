@@ -67,7 +67,7 @@ export const dataComponents = {
   table({ children }: { children?: ReactNode }) {
     return (
       <div className="w-full overflow-x-auto">
-        <table className="w-full border border-neutral-300">{children}</table>
+        <table className="w-full border border-neutral-400">{children}</table>
       </div>
     );
   },
@@ -82,7 +82,7 @@ export const dataComponents = {
   }: { children?: ReactNode } & HTMLAttributes<HTMLTableCellElement>) {
     return (
       <th
-        className="border border-neutral-300 p-4 text-center font-semibold dark:border-neutral-700"
+        className="border border-neutral-400 p-4 text-center font-semibold dark:border-neutral-700"
         {...props}
       >
         {children}
@@ -102,14 +102,14 @@ export const dataComponents = {
     });
 
     return (
-      <tr className="border-b border-neutral-300 dark:border-neutral-700">
+      <tr className="border-b border-neutral-400 dark:border-neutral-700">
         {children}
       </tr>
     );
   },
   td({ children }: { children?: ReactNode }) {
     return (
-      <td className="border border-neutral-300 p-4 first:p-4 last:p-4 dark:border-neutral-700">
+      <td className="border border-neutral-400 p-4 first:p-4 last:p-4 dark:border-neutral-700">
         {children}
       </td>
     );

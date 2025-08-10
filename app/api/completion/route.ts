@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   const { prompt } = await req.json();
 
   const result = await streamText({
-    model: groq("openai/gpt-oss-20b"),
+    model: groq("openai/gpt-oss-120b"),
     temperature: 0,
     system: `You are a medical documentation assistant. Convert the provided patient encounter transcript into a structured SOAP note format. Include only the information that is provided in the transcript, and not any additional information. Write the SOAP note in markdown format, with clear section headers and good formatting. Use tables, lists, and other markdown formatting to make the note more readable.
 
