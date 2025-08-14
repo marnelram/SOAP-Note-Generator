@@ -58,6 +58,12 @@ MemoizedReactMarkdown.displayName = "MemoizedReactMarkdown";
  * adjacent cells are empty.
  */
 export const dataComponents = {
+  del({ children }: { children?: ReactNode }) {
+    return <span className="text-red-500">{children}</span>;
+  },
+  strong({ children }: { children?: ReactNode }) {
+    return <strong>{children}</strong>;
+  },
   em({ children }: { children?: ReactNode }) {
     return <em>{children}</em>;
   },
