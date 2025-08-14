@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 const deepgram = createClient(process.env.DEEPGRAM_API_KEY!);
 
+// Configure longer timeout for transcription (10 minutes)
+export const maxDuration = 600;
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
@@ -11,6 +14,32 @@ export async function POST(request: NextRequest) {
     if (!audioFile) {
       return NextResponse.json(
         { error: "No audio file provided" },
+        { status: 400 }
+      );
+    }
+
+    // Validate file size (500MB limit)
+    const maxSizeBytes = 500 * 1024 * 1024;
+    if (audioFile.size > maxSizeBytes) {
+      return NextResponse.json(
+        {
+          error: `Audio file too large. Maximum size allowed is ${
+            maxSizeBytes / (1024 * 1024)
+          }MB. Current file size: ${(audioFile.size / (1024 * 1024)).toFixed(
+            2
+          )}MB`,
+        },
+        { status: 413 }
+      );
+    }
+
+    // Validate file type
+    if (
+      !audioFile.type.startsWith("audio/") &&
+      !audioFile.type.includes("webm")
+    ) {
+      return NextResponse.json(
+        { error: "Invalid file type. Please upload an audio file." },
         { status: 400 }
       );
     }
@@ -50,7 +79,7 @@ export async function POST(request: NextRequest) {
       metadata: {
         duration: result.metadata.duration,
         model: "nova-3-medical",
-        language: result.metadata.language,
+        language: "en",
       },
     });
   } catch (error) {

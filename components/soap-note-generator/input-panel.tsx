@@ -8,6 +8,7 @@ interface InputPanelProps {
   transcript: string;
   isRecording: boolean;
   isTranscribing: boolean;
+  recordingDuration?: number;
   isLoading: boolean;
   onStartRecording: () => Promise<void>;
   onStopRecording: () => void;
@@ -22,6 +23,7 @@ export function InputPanel({
   transcript,
   isRecording,
   isTranscribing,
+  recordingDuration,
   isLoading,
   onStartRecording,
   onStopRecording,
@@ -43,6 +45,7 @@ export function InputPanel({
         <AudioInput
           isRecording={isRecording}
           isTranscribing={isTranscribing}
+          recordingDuration={recordingDuration}
           onStartRecording={onStartRecording}
           onStopRecording={onStopRecording}
           onFileUpload={onFileUpload}
@@ -59,6 +62,3 @@ export function InputPanel({
     </div>
   );
 }
-
-
-

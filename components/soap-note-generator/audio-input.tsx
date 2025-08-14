@@ -7,6 +7,7 @@ import { Mic, MicOff, Upload } from "lucide-react";
 interface AudioInputProps {
   isRecording: boolean;
   isTranscribing: boolean;
+  recordingDuration?: number;
   onStartRecording: () => Promise<void>;
   onStopRecording: () => void;
   onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
@@ -15,11 +16,21 @@ interface AudioInputProps {
 export function AudioInput({
   isRecording,
   isTranscribing,
+  recordingDuration = 0,
   onStartRecording,
   onStopRecording,
   onFileUpload,
 }: AudioInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Format duration as MM:SS
+  const formatDuration = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
+  };
 
   return (
     <Card>
@@ -56,11 +67,22 @@ export function AudioInput({
         </div>
 
         {(isRecording || isTranscribing) && (
-          <div className="text-center">
+          <div className="text-center space-y-2">
             <Badge variant="secondary" className="animate-pulse">
-              {isRecording && "Recording in progress..."}
+              {isRecording &&
+                `Recording in progress... ${formatDuration(recordingDuration)}`}
               {isTranscribing && "Transcribing with Deepgram Nova-3-Medical..."}
             </Badge>
+            {isRecording && recordingDuration > 60 && (
+              <div className="text-sm text-muted-foreground">
+                Tip: For better results, pause during long silences
+              </div>
+            )}
+            {isTranscribing && (
+              <div className="text-sm text-muted-foreground">
+                Large files may take a few minutes to process
+              </div>
+            )}
           </div>
         )}
       </CardContent>

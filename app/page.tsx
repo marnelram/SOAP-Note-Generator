@@ -20,6 +20,7 @@ export default function SOAPNoteGeneratorPage() {
     isRecording,
     transcript,
     isTranscribing,
+    recordingDuration,
     startRecording,
     stopRecording,
     transcribeFile,
@@ -146,6 +147,7 @@ ${transcript}`;
         transcript={transcript}
         isRecording={isRecording}
         isTranscribing={isTranscribing}
+        recordingDuration={recordingDuration}
         isLoading={isLoading}
         onStartRecording={handleStartRecording}
         onStopRecording={stopRecording}
