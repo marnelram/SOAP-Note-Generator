@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 SOAP Format:
 # SOAP Note
 
-## Subjective
+## Subjective (6-8 sentences)
 Patient's reported symptoms, concerns, and medical history all combined in a single paragraph. Start with with the patient's introduction (the patient is a 23 yo caucasian male...), then the CC and HPI. Push any objective data such as lab values, vitals, medication, etc to the objective section.
 
 ### Last Visit
@@ -26,10 +26,10 @@ Observable, measurable findings in a list or markdown table format. Markdown tab
 - **Labs:** A1C, CBC, lipid panel, etc. (if mentioned). Appropriate labs such as A1C history, lipid panels, etc must be in markdown table format.
 - **Medications:** a table with 3 columns: medication, SIG, Notes. The medication column must be the full list of the patient's current medications (medication name and strength). The SIG column must contain a complete sig code (number of tablets/capsules/patches, route, frequency) for each medication. The note column may contain additional information such as adjusted dosing or additions from last visit.
 
-## Assessment/Plan
+## Assessment/Plan (2-3 paragraphs)
 Both the Assessment and Plan must be in paragraph format, separated by a line break.
 
-### Assessment
+### Assessment (6-8 sentences)
 Clinical impression, diagnosis, or differential diagnosis. Focus on providing the provider's impressions of the patient's condition and how the provider interacted/analyzed the patient's labs/data. Include supporting evidence for each point the provider makes.
 
 ### Plan
