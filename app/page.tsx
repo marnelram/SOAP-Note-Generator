@@ -1,10 +1,13 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useCompletion } from "@ai-sdk/react";
 import { useDeepgramTranscription } from "@/hooks/use-deepgram-transcription";
-import { InputPanel, SOAPNoteDisplay } from "@/components/soap-note-generator";
+import {
+  InputPanel,
+  SteppedSOAPDisplay,
+} from "@/components/soap-note-generator";
 import { cn } from "@/lib/utils";
 import SOAPDrawer from "@/components/soap-note-generator/SOAP-drawer";
 
@@ -14,6 +17,10 @@ export default function SOAPNoteGeneratorPage() {
 
   /** Reference to the case drawer toggle button for programmatic control */
   const drawerRef = useRef<HTMLButtonElement>(null);
+
+  // State for two-step process
+  const [bulletPoints, setBulletPoints] = useState<string>("");
+  const [currentStep, setCurrentStep] = useState<1 | 2>(1);
 
   // Use Deepgram for transcription
   const {
@@ -28,17 +35,63 @@ export default function SOAPNoteGeneratorPage() {
     setTranscript,
   } = useDeepgramTranscription();
 
-  // Use the useCompletion hook for streaming SOAP note generation
+  // Step 1: Extract bullet points
   const {
-    completion: soapNoteContent,
-    complete,
-    isLoading,
+    completion: step1Content,
+    complete: completeStep1,
+    isLoading: isLoadingStep1,
   } = useCompletion({
-    api: "/api/completion",
+    api: "/api/completion/step1",
     streamProtocol: "text",
   });
 
+  // Step 2: Convert to full SOAP note
+  const {
+    completion: soapNoteContent,
+    complete: completeStep2,
+    isLoading: isLoadingStep2,
+  } = useCompletion({
+    api: "/api/completion/step2",
+    streamProtocol: "text",
+  });
+
+  const isLoading = isLoadingStep1 || isLoadingStep2;
+
+  // Auto-trigger step 2 when step 1 completes
+  useEffect(() => {
+    const triggerStep2 = async () => {
+      if (step1Content && !isLoadingStep1 && currentStep === 1) {
+        try {
+          setCurrentStep(2);
+          setBulletPoints(step1Content);
+
+          toast({
+            title: "Step 2: Creating Full SOAP Note",
+            description: "Converting bullet points to complete SOAP note...",
+          });
+
+          await completeStep2(step1Content);
+
+          toast({
+            title: "SOAP Note Complete",
+            description: "Your SOAP note has been generated successfully!",
+          });
+        } catch (error) {
+          console.error("Error in step 2:", error);
+          toast({
+            title: "Step 2 Error",
+            description: "Failed to convert bullet points to SOAP note.",
+            variant: "destructive",
+          });
+        }
+      }
+    };
+
+    triggerStep2();
+  }, [step1Content, isLoadingStep1, currentStep, completeStep2, toast]);
+
   console.log("soap note: ", soapNoteContent);
+  console.log("bullet points: ", step1Content);
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -89,12 +142,15 @@ export default function SOAPNoteGeneratorPage() {
       if (drawerRef.current && window && window.innerWidth < 1024) {
         drawerRef.current.click();
       }
-      await complete(`${transcript}`);
 
+      // Step 1: Extract bullet points
+      setCurrentStep(1);
       toast({
-        title: "SOAP Note Generation Started",
-        description: "Your SOAP note is being generated...",
+        title: "Step 1: Extracting Information",
+        description: "Organizing transcript into SOAP bullet points...",
       });
+
+      await completeStep1(`${transcript}`);
     } catch (error) {
       console.error("Error generating SOAP note:", error);
       toast({
@@ -149,6 +205,7 @@ ${transcript}`;
         isTranscribing={isTranscribing}
         recordingDuration={recordingDuration}
         isLoading={isLoading}
+        currentStep={currentStep}
         onStartRecording={handleStartRecording}
         onStopRecording={stopRecording}
         onFileUpload={handleFileUpload}
@@ -162,7 +219,10 @@ ${transcript}`;
           soapNoteContent ? "lg:w-3/5" : "lg:w-2/5"
         )}
       >
-        <SOAPNoteDisplay
+        <SteppedSOAPDisplay
+          currentStep={currentStep}
+          isLoading={isLoading}
+          bulletPoints={step1Content}
           soapNoteContent={soapNoteContent}
           onCopyToClipboard={copyToClipboard}
           onExportSOAP={exportSOAP}
@@ -171,6 +231,8 @@ ${transcript}`;
       <SOAPDrawer
         drawerRef={drawerRef}
         isLoading={isLoading}
+        currentStep={currentStep}
+        bulletPoints={step1Content}
         soapNoteContent={soapNoteContent}
         onCopyToClipboard={copyToClipboard}
         onExportSOAP={exportSOAP}

@@ -6,6 +6,7 @@ import { FileText, Copy } from "lucide-react";
 interface TranscriptEditorProps {
   transcript: string;
   isLoading: boolean;
+  currentStep?: 1 | 2;
   onTranscriptChange: (value: string) => void;
   onGenerateSOAP: () => Promise<void>;
   onCopyToClipboard: (text: string) => Promise<void>;
@@ -14,6 +15,7 @@ interface TranscriptEditorProps {
 export function TranscriptEditor({
   transcript,
   isLoading,
+  currentStep,
   onTranscriptChange,
   onGenerateSOAP,
   onCopyToClipboard,
@@ -49,13 +51,14 @@ export function TranscriptEditor({
             className="w-full"
           >
             <FileText className="h-4 w-4 mr-2" />
-            {isLoading ? "Generating SOAP Note..." : "Generate SOAP Note"}
+            {isLoading
+              ? currentStep === 1
+                ? "Step 1: Extracting Information..."
+                : "Step 2: Creating SOAP Note..."
+              : "Generate SOAP Note"}
           </Button>
         </div>
       </CardContent>
     </Card>
   );
 }
-
-
-

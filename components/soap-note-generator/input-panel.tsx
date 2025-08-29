@@ -10,6 +10,7 @@ interface InputPanelProps {
   isTranscribing: boolean;
   recordingDuration?: number;
   isLoading: boolean;
+  currentStep?: 1 | 2;
   onStartRecording: () => Promise<void>;
   onStopRecording: () => void;
   onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
@@ -25,6 +26,7 @@ export function InputPanel({
   isTranscribing,
   recordingDuration,
   isLoading,
+  currentStep,
   onStartRecording,
   onStopRecording,
   onFileUpload,
@@ -54,6 +56,7 @@ export function InputPanel({
         <TranscriptEditor
           transcript={transcript}
           isLoading={isLoading}
+          currentStep={currentStep}
           onTranscriptChange={onTranscriptChange}
           onGenerateSOAP={onGenerateSOAP}
           onCopyToClipboard={onCopyToClipboard}

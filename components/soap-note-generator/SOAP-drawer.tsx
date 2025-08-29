@@ -19,7 +19,7 @@ import {
   DrawerTrigger,
 } from "../ui/drawer";
 import { Loader2, X } from "lucide-react";
-import { SOAPNoteDisplay } from "./soap-note-display";
+import { SteppedSOAPDisplay } from "./stepped-soap-display";
 
 interface CaseDrawerProps {
   /** Reference to the drawer trigger button element */
@@ -28,6 +28,8 @@ interface CaseDrawerProps {
   /** Whether a case is currently being generated */
   isLoading?: boolean;
 
+  currentStep: 1 | 2;
+  bulletPoints: string;
   soapNoteContent: string;
 
   onCopyToClipboard: (text: string) => Promise<void>;
@@ -57,6 +59,8 @@ interface CaseDrawerProps {
 export default function SOAPDrawer({
   isLoading,
   drawerRef,
+  currentStep,
+  bulletPoints,
   soapNoteContent,
   onCopyToClipboard,
   onExportSOAP,
@@ -85,7 +89,10 @@ export default function SOAPDrawer({
                 <X className="h-8 w-8" />
               </DrawerClose>
             </DrawerHeader>
-            <SOAPNoteDisplay
+            <SteppedSOAPDisplay
+              currentStep={currentStep}
+              isLoading={isLoading}
+              bulletPoints={bulletPoints}
               soapNoteContent={soapNoteContent}
               onCopyToClipboard={onCopyToClipboard}
               onExportSOAP={onExportSOAP}
