@@ -1,217 +1,111 @@
 # SOAP Note Generator
 
-A medical documentation assistant that converts voice recordings and audio files into structured SOAP notes using **Deepgram Nova-3-Medical** for highly accurate medical speech recognition and **OpenAI GPT-4** for intelligent SOAP note generation.
+A medical documentation assistant that turns a live patient encounter into a structured **SOAP note**. Speech is transcribed in real time with **Deepgram Nova-3-Medical**, and the transcript is converted to a formatted SOAP note by an LLM streamed through the **Vercel AI SDK**.
 
-## Features
+## How it works
 
-🎤 **Medical-Grade Speech Recognition**
+The app is a single two-pane page ([app/page.tsx](app/page.tsx)): audio input on the left, generated note on the right (a drawer on mobile).
 
-- Powered by Deepgram Nova-3-Medical model
-- Specialized for medical terminology, drug names, and clinical jargon
-- 63.7% better accuracy than competitors on medical audio
-- Real-time voice recording with live transcription
+1. **Live transcription** — Click record and the browser captures your mic and opens a WebSocket **directly to Deepgram**, streaming raw PCM audio. Interim words appear as you speak; finalized text is appended to the editable transcript.
+2. **SOAP generation** — The transcript is sent to a server route that streams it through an LLM with a medical-documentation system prompt. The note streams back as markdown and renders live.
 
-📁 **Audio File Upload**
-
-- Support for various audio formats (WAV, MP3, M4A, etc.)
-- Batch processing of pre-recorded consultations
-- Drag-and-drop interface for easy file uploads
-
-🏥 **Intelligent SOAP Note Generation**
-
-- Structured medical documentation (Subjective, Objective, Assessment, Plan)
-- Powered by OpenAI GPT-4 for clinical accuracy
-- Markdown formatting for enhanced readability
-- Copy and export functionality
+```
+mic ──▶ browser (Web Audio) ──WebSocket──▶ Deepgram Nova-3-Medical
+                                                    │
+                                            live transcript
+                                                    │
+transcript ──▶ /api/completion ──▶ Groq LLM ──stream──▶ SOAP note (markdown)
+```
 
 ## Technology Stack
 
-- **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS
-- **Speech-to-Text**: Deepgram Nova-3-Medical API
-- **AI Processing**: OpenAI GPT-4 via Vercel AI SDK
-- **UI Components**: Radix UI, Shadcn/ui
-- **Deployment**: Vercel
+- **Framework**: Next.js 15 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS **v4** (theme in `app/globals.css` — there is no `tailwind.config.ts`), shadcn/ui + Radix primitives
+- **Speech-to-Text**: Deepgram Nova-3-Medical (`@deepgram/sdk`)
+- **LLM / streaming**: Vercel AI SDK (`ai`, `@ai-sdk/*`); SOAP generation currently runs on **Groq** (`openai/gpt-oss-120b`)
+- **Package manager**: pnpm
 
-## Setup Instructions
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ and pnpm
-- Deepgram API Key ([Sign up here](https://console.deepgram.com/signup))
-- OpenAI API Key ([Get yours here](https://platform.openai.com/api-keys))
+- Node.js 18+ and **pnpm**
+- A [Deepgram API key](https://console.deepgram.com/signup) (transcription)
+- A [Groq API key](https://console.groq.com/keys) (SOAP generation — the active LLM path)
 
 ### Environment Variables
 
-Create a `.env.local` file in the project root:
+Create a `.env.local` in the project root:
 
 ```bash
-# OpenAI API Key for SOAP note generation
-OPENAI_API_KEY=your_openai_api_key_here
-
-# Deepgram API Key for speech-to-text transcription
+# Required — Deepgram speech-to-text (live + file transcription)
 DEEPGRAM_API_KEY=your_deepgram_api_key_here
+
+# Required — Groq powers the active SOAP-note generation path (/api/completion)
+GROQ_API_KEY=your_groq_api_key_here
+
+# Optional — only used by app/actions.ts (gpt-4o), which is not wired into the UI
+OPENAI_API_KEY=your_openai_api_key_here
 ```
 
-### Installation
+### Install & run
 
-1. **Clone the repository**
+```bash
+pnpm install
+pnpm dev          # http://localhost:3000
+```
 
-   ```bash
-   git clone <repository-url>
-   cd SOAP-Note-Generator
-   ```
+Other scripts: `pnpm build`, `pnpm start`, `pnpm lint`.
 
-2. **Install dependencies**
-
-   ```bash
-   pnpm install
-   ```
-
-3. **Run the development server**
-
-   ```bash
-   pnpm dev
-   ```
-
-4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+> **Note:** `next.config.mjs` sets `ignoreBuildErrors` and `ignoreDuringBuilds`, so **`pnpm build` does not fail on TypeScript or ESLint errors**. Run `pnpm lint` and `pnpm tsc --noEmit` explicitly if you want those checks in CI or locally.
 
 ## Usage
 
-### Voice Recording
+1. Click **Start Recording** and speak the patient encounter. Grant microphone permission when prompted.
+2. Watch the transcript fill in live. Click **Stop** when done and edit the transcript if needed.
+3. Click **Generate SOAP Note**. The structured note streams into the right pane (or the drawer on mobile), where you can copy or export it.
 
-1. Click "Start Recording" to begin voice capture
-2. Speak clearly about the patient encounter
-3. Click "Stop Recording" when finished
-4. The audio will be automatically transcribed using Deepgram Nova-3-Medical
-
-### File Upload
-
-1. Click "Upload Audio File"
-2. Select an audio file from your device
-3. The file will be processed and transcribed automatically
-
-### Generate SOAP Note
-
-1. Review and edit the transcript if needed
-2. Click "Generate SOAP Note"
-3. The AI will create a structured SOAP note
-4. Copy or download the generated note
-
-## API Endpoints
-
-### `POST /api/transcribe`
-
-Transcribes uploaded audio files using Deepgram Nova-3-Medical
-
-**Request**: FormData with audio file
-**Response**:
-
-```json
-{
-  "transcript": "transcribed text",
-  "confidence": 0.95,
-  "metadata": {
-    "duration": 45.2,
-    "model": "nova-3-medical",
-    "language": "en"
-  }
-}
-```
-
-### `POST /api/completion`
-
-Generates SOAP notes from transcripts using OpenAI GPT-4
-
-**Request**:
-
-```json
-{
-  "prompt": "transcript text"
-}
-```
-
-**Response**: Streaming text response with SOAP note
-
-## Deepgram Nova-3-Medical Features
-
-- **Medical Terminology**: Specialized recognition of drug names, procedures, diagnoses
-- **Clinical Accuracy**: 40.35% better keyword error rate than competitors
-- **Smart Formatting**: Automatic punctuation, capitalization, and structure
-- **Speaker Diarization**: Identifies different speakers in recordings
-- **Noise Handling**: Excellent performance in clinical environments
-
-## Security & Compliance
-
-- All audio processing is done via secure APIs
-- No audio files are permanently stored
-- Transcripts are processed in memory only
-- HIPAA-compliant infrastructure available through Deepgram
-
-## Development
-
-### Project Structure
+## Project Structure
 
 ```
 ├── app/
 │   ├── api/
-│   │   ├── transcribe/          # Deepgram transcription endpoint
-│   │   ├── transcribe-live/     # Live transcription endpoint
-│   │   └── completion/          # OpenAI SOAP generation
-│   ├── actions.ts               # Server actions
-│   └── page.tsx                 # Main application page
+│   │   ├── transcribe-live/route.ts  # Hands the client Deepgram config + key for the live WebSocket
+│   │   ├── completion/route.ts       # Streams the SOAP note from the Groq LLM  ← active generation path
+│   │   └── transcribe/route.ts       # Prerecorded file upload (NOT wired into the current UI)
+│   ├── actions.ts                    # generateSOAPNote via OpenAI gpt-4o (NOT wired into the current UI)
+│   ├── page.tsx                      # Main two-pane page; owns app state
+│   └── globals.css                   # Tailwind v4 theme / design tokens
 ├── components/
-│   ├── soap-note-generator/     # Core application components
-│   │   ├── header.tsx           # App title and description
-│   │   ├── audio-input.tsx      # Recording controls and file upload
-│   │   ├── transcript-editor.tsx # Transcript display and editing
-│   │   ├── soap-note-display.tsx # SOAP note viewer and export
-│   │   ├── input-panel.tsx      # Left panel layout component
-│   │   └── index.ts             # Component exports
-│   ├── ui/                      # Shadcn/ui components
-│   └── markdown.tsx             # Markdown rendering
+│   ├── soap-note-generator/          # App-specific UI (Header, AudioInput, TranscriptEditor,
+│   │   │                             #   InputPanel, SOAPNoteDisplay, SOAP-drawer); index.ts barrel
+│   ├── ui/                           # shadcn/ui components
+│   └── markdown.tsx                  # react-markdown + remark-gfm renderer
 ├── hooks/
-│   ├── use-deepgram-transcription.ts  # Deepgram integration
-│   └── use-toast.ts             # Toast notifications
-└── lib/
-    └── utils.ts                 # Utility functions
+│   ├── use-realtime-transcription.ts # ★ Core: mic capture + Deepgram WebSocket + transcript state
+│   └── use-toast.ts                  # shadcn toast
+└── lib/utils.ts                      # cn() and helpers
 ```
 
-### Component Architecture
+The single most important file to understand is [hooks/use-realtime-transcription.ts](hooks/use-realtime-transcription.ts) — it manages microphone capture (Web Audio API, float32→int16 at 16 kHz mono), the direct Deepgram WebSocket, interim-vs-final transcript handling, and exponential-backoff reconnection.
 
-The application is built with a modular component structure for maintainability and reusability:
+## Conventions
 
-**Core Components:**
+- **Import alias:** `@/*` maps to the repo root (e.g. `@/components/ui/button`, `@/lib/utils`).
+- **Styling:** Prefer shadcn components, then semantic Tailwind classes (`bg-card`, `text-foreground`), and only then direct palette colors. Everything must work in light and dark mode. See [.cursor/rules/design-guide.mdc](.cursor/rules/design-guide.mdc) for the full design system.
+- **Client vs server:** Components touching the mic/WebSocket/DOM are `"use client"`; backend logic lives in `app/api/*/route.ts` route handlers.
 
-- `Header` - Application branding and description
-- `AudioInput` - Voice recording and file upload interface
-- `TranscriptEditor` - Transcript display, editing, and SOAP generation
-- `SOAPNoteDisplay` - Generated SOAP note viewer with export functionality
-- `InputPanel` - Composite component organizing the left panel layout
+## Gotchas for new developers
 
-**Features:**
+- **The README used to claim OpenAI GPT-4 does generation — it doesn't.** The live path uses **Groq** (`/api/completion`). The OpenAI and file-upload code paths (`app/actions.ts`, `app/api/transcribe/route.ts`) exist but are **not** called by the current UI; file upload was removed to focus on realtime. Verify before building on them.
+- **The Deepgram API key is sent to the browser** so it can open the WebSocket directly. This is fine for local/dev but should be hardened (server-side proxy or Deepgram temporary keys) before any production/HIPAA use.
+- No audio is stored server-side; transcripts are processed in memory.
 
-- ✅ TypeScript interfaces for all props
-- ✅ Responsive design with adaptive layouts
-- ✅ Clean separation of concerns
-- ✅ Reusable and testable components
-- ✅ Consistent styling with Tailwind CSS
+## Security & Compliance
 
-### Key Dependencies
-
-- `@deepgram/sdk` - Deepgram JavaScript SDK
-- `@ai-sdk/openai` - OpenAI integration
-- `@radix-ui/*` - UI primitives
-- `lucide-react` - Icons
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+- Audio is processed via Deepgram's API and not persisted by this app.
+- HIPAA-compliant infrastructure is available through Deepgram, but note the API-key exposure gotcha above before treating this app as production-ready.
 
 ## License
 
-MIT License - see LICENSE file for details
+MIT License — see LICENSE file for details.
