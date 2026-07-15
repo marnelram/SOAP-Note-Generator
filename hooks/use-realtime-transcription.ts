@@ -152,7 +152,7 @@ export function useRealtimeTranscription(): UseRealtimeTranscriptionReturn {
           throw new Error(
             `Failed to get transcription configuration: ${
               errorData.error || response.statusText
-            }`
+            }`,
           );
         }
 
@@ -187,7 +187,7 @@ export function useRealtimeTranscription(): UseRealtimeTranscriptionReturn {
             reconnectTimeoutRef.current = setTimeout(() => {
               reconnectTimeoutRef.current = null;
               console.log(
-                `Attempting to reconnect (attempt ${reconnectAttempts.current}/${maxRetries})`
+                `Attempting to reconnect (attempt ${reconnectAttempts.current}/${maxRetries})`,
               );
               startRecording(customOptions);
             }, delay);
@@ -219,10 +219,7 @@ export function useRealtimeTranscription(): UseRealtimeTranscriptionReturn {
           }, 5000);
 
           toast({
-            title: "Real-time Transcription Started",
-            description: `Using ${
-              metadata?.modelInfo || "Deepgram model"
-            } - Start speaking now`,
+            title: "Transcription Started",
           });
         };
 
@@ -242,7 +239,7 @@ export function useRealtimeTranscription(): UseRealtimeTranscriptionReturn {
 
                 if (data.is_final || data.speech_final) {
                   setTranscript(
-                    (prev) => prev + (prev ? " " : "") + transcript
+                    (prev) => prev + (prev ? " " : "") + transcript,
                   );
                   setInterimTranscript("");
                 } else {
@@ -254,7 +251,7 @@ export function useRealtimeTranscription(): UseRealtimeTranscriptionReturn {
             console.error(
               "Error parsing Deepgram message:",
               parseError,
-              event.data
+              event.data,
             );
           }
         };
@@ -315,7 +312,7 @@ export function useRealtimeTranscription(): UseRealtimeTranscriptionReturn {
             for (let i = 0; i < inputData.length; i++) {
               int16Array[i] = Math.max(
                 -32768,
-                Math.min(32767, inputData[i] * 32768)
+                Math.min(32767, inputData[i] * 32768),
               );
             }
 
@@ -333,14 +330,14 @@ export function useRealtimeTranscription(): UseRealtimeTranscriptionReturn {
           error instanceof Error ? error.message : "Unknown error occurred";
         toast({
           title: "Recording Error",
-          description: `Failed to start real-time transcription: ${errorMessage}`,
+          description: `Failed to start transcription: ${errorMessage}`,
           variant: "destructive",
         });
         setIsConnecting(false);
         stopRecording();
       }
     },
-    [toast, stopRecording]
+    [toast, stopRecording],
   );
 
   const clearTranscript = useCallback(() => {

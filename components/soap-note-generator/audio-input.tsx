@@ -46,7 +46,7 @@ export function AudioInput({
               variant="outline"
             >
               <Mic className="h-5 w-5 mr-2" />
-              Start Real-time Recording
+              Start Recording
             </Button>
           ) : (
             <Button
@@ -65,9 +65,9 @@ export function AudioInput({
         {(isConnecting || isRecording || isTranscribing) && (
           <div className="text-center">
             <Badge variant="secondary" className="animate-pulse">
-              {isConnecting && "Connecting to transcription service..."}
-              {isRecording && "Recording - speak now"}
-              {isTranscribing && "Transcribing with Deepgram Nova-3-Medical..."}
+              {isConnecting && "Connecting..."}
+              {isRecording && "Recording..."}
+              {isTranscribing && "Transcribing..."}
             </Badge>
           </div>
         )}
@@ -86,11 +86,6 @@ export function AudioInput({
                 <span className="text-muted-foreground italic">
                   {transcript ? " " : ""}
                   {interimTranscript}
-                </span>
-              )}
-              {!transcript && !interimTranscript && (
-                <span className="text-muted-foreground">
-                  Transcript will appear here as you speak...
                 </span>
               )}
             </div>
